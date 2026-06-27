@@ -1,0 +1,4 @@
+interface:
+  display_name: "PyFMTO Research"
+  short_description: "FMTO research, PyFMTO experiments, provenance, and diagnostics"
+  default_prompt: "Use $pyfmto-research to design, implement, run, and analyze a PyFMTO federated many-task optimization experiment with provenance and diagnostic artifacts."
