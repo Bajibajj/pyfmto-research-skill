@@ -22,7 +22,7 @@ Use a small problem, low dimension, low budget, `snapshot: false`, and `verbose:
 Check:
 
 - `pyfmto list algorithms` passes.
-- `pyfmto show <algorithm>` exposes expected parameters.
+- `pyfmto show algorithms.<ALG> -c <config.yaml>` exposes expected parameters.
 - One tiny `pyfmto run` finishes.
 - No import, port, logging, or shape errors appear.
 
@@ -71,7 +71,7 @@ After the main variant is ready, build the batch from the ablation switch regist
 - `fixed_schedule`: disable adaptive schedules such as kappa or trust decay.
 - `cost_light`: reduce expensive candidate generation or model fitting for cost ablation.
 
-Run them in parallel on the server when resources allow.
+Run them in parallel only after resource and effective client/server port isolation checks in [server-experiment-orchestration.md](server-experiment-orchestration.md) pass; the upstream default port is shared.
 
 ## Stage 5: Performance Test
 
@@ -83,14 +83,14 @@ Use `repeat: 3` before deciding whether a variant deserves larger repeat counts.
 
 Generate console, Excel, and curve reports.
 
-Use IAFFBO last in comparisons when it is the reference algorithm:
+When evaluating the user's method, put it last so it becomes the final algorithm column and comparison target:
 
 ```yaml
 comparisons:
-  - [NEWALG, FDEMD, FMTBO, IAFFBO]
+  - [FDEMD, FMTBO, IAFFBO, NEWALG]
 ```
 
-For ablations, use the main algorithm last only when the question is “which ablation loses against the full method”. Otherwise keep IAFFBO last for baseline comparison.
+For ablations against the full method, put the full method last. Use IAFFBO last only when the user selects it as the target. Before interpreting a report, follow the data-coverage and symbol checks in [result-analysis.md](result-analysis.md); missing target data must not be treated as a valid comparison.
 
 ## Stage 7: Failure-Client Analysis
 
@@ -111,7 +111,7 @@ For weak clients, inspect:
 
 Map results to claims conservatively:
 
-- Main method beats baselines: supported only if repeat 3 or higher gives stable evidence.
+- Main method beats baselines: assess matched budgets, repeated-run variability, per-client regressions, and valid statistics. Repeat 3 is a screening default, not sufficient evidence by itself.
 - Similarity module helps: supported only if `no_similarity` drops while other settings stay controlled.
 - Transfer module helps: supported only if `no_transfer` drops or convergence slows and transfer-event logs show the module was actually used.
 - Trust or similarity module helps: supported only if trust snapshots show plausible neighbors and the controlled ablation drops.

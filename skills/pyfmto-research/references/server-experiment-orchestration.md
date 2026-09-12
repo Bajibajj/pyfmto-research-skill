@@ -97,25 +97,27 @@ Write structured diagnostic artifacts to `out/_diagnostics/<run_id>/<algorithm>/
 
 ## Port Handling
 
-Port ranges are not fixed.
+Apply the version check in [framework-operations.md](framework-operations.md). In upstream 0.3.4, both client and server default to `localhost:18510`; `launcher.port` is not a supported wiring mechanism. Different screen sessions or different unused YAML port numbers do not isolate listeners.
 
-Before launching parallel PyFMTO runs:
+Before parallel launches:
 
-1. Inspect each config and ensure `launcher.port` values are unique.
-2. Follow the project's existing port convention if one exists.
-3. If no convention exists, choose unused-looking ports dynamically.
-4. When possible, check active processes or use a small Python socket probe before finalizing ports.
-5. If a run fails with connection or bind errors, treat port conflict as a first suspect.
+1. Inspect the actual launcher, Client/Server constructors, and `set_addr` calls. Identify the parameters the project really routes to both endpoints.
+2. If a custom version supports per-run ports, give each job a distinct port, check existing listeners, and verify the effective client/server pair in a small run. A free-port probe alone does not prove the config takes effect.
+3. If the project has no supported port isolation, run serially. Do not add a cosmetic `launcher.port` key or silently modify the framework to enable parallelism.
+4. Use separate result roots for different protocol/code versions, even when ports are isolated. Check active sessions and result completion before relaunching.
+5. If a run fails with connection or bind errors, inspect the listener and server startup traceback before retrying.
 
 ## Launch Pattern
 
 Typical screen command shape:
 
 ```bash
-screen -dmS newalg_arxiv_r3 bash -lc 'cd <project-root> && conda activate fmto && pyfmto run -c configs/run_NEWALG_arxiv_r3.yaml > out/_logs/newalg_arxiv_r3.log 2>&1'
+screen -dmS newalg_arxiv_r3 bash -lc 'cd <project-root> && mkdir -p out/_logs && conda run --no-capture-output -n fmto pyfmto run -c configs/run_NEWALG_arxiv_r3.yaml > out/_logs/newalg_arxiv_r3.log 2>&1'
 ```
 
-Use report screens after run screens finish unless the report reads already completed result directories.
+Replace `<project-root>` and the config path with verified paths before executing. Verify `conda run` works in this shell, or use the project's already validated shell initialization and interpreter. A created screen session is dispatch evidence, not proof the experiment succeeded.
+
+Use report screens after run screens finish unless the report reads already completed result directories. Apply the run receipt and report-coverage checks in [framework-operations.md](framework-operations.md).
 
 ## Monitoring
 

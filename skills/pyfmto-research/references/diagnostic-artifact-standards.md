@@ -151,7 +151,7 @@ In expensive black-box runs, every true evaluation must be accountable.
 Keep a per-client ledger with:
 
 - `client_id`, `problem`, `dim`, `repeat_id`, and `seed`.
-- `fe_max`: total allowed true evaluations, normally `11 × dim`.
+- `fe_max`: total allowed true evaluations, normally `300`.
 - `fe_init`: initialization evaluations.
 - `fe_used`: current true evaluations used.
 - `remaining_fe`: remaining true evaluations.

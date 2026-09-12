@@ -1,0 +1,28 @@
+# Replace NEWALG with a verified registration or define it via algorithms.base.
+# Verify baseline availability; choose a fresh results root for each version.
+# Set constructor kwargs under algorithms.<name>.client/server as needed.
+launcher:
+  algorithms: [FDEMD, FMTBO, IAFFBO, NEWALG]
+  problems: [Arxiv2017]
+  results: out/newalg_v1
+  repeat: 3
+  save: true
+  snapshot: true
+  verbose: true
+  loglevel: DEBUG
+  packages: [pyfmto, numpy, scipy, pandas]
+reporter:
+  formats: [console, excel, curve]
+  comparisons:
+    - [FDEMD, FMTBO, IAFFBO, NEWALG]
+  params:
+    curve: {on_log_scale: true, merge: true, suffix: .png}
+    excel: {pvalue: 0.05}
+problems:
+  Arxiv2017:
+    dim: 3
+    fe_init: 15
+    fe_max: 300
+    npd: 1
+    seed: 123
+    random_ctrl: weak

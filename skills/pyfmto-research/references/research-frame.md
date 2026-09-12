@@ -30,7 +30,7 @@ Key axes:
 - Candidate-source attribution: which mechanism produced each true evaluation point and whether it helped or hurt.
 - Diagnostic artifact evidence: transfer events, trust matrices, budget ledgers, surrogate health logs, and ablation switch registries that explain the mechanism.
 - Heterogeneity robustness: how to avoid negative transfer when tasks are unrelated.
-- Expensive evaluation efficiency: how each real evaluation improves search under `fe_max = 11 × dim`.
+- Expensive evaluation efficiency: how each real evaluation improves search under `fe_max = 300`.
 - Runtime/resource awareness: how much cost the method adds, whether GPU, batching, or vectorization can reduce it, and whether the cost is justified by objective gains.
 
 ## Default Analysis Template
