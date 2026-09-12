@@ -30,7 +30,7 @@ Typical files and directories:
 3. Read project-level `README.md` and `CONVENTIONS.md` when they exist.
 4. Find templates such as `algorithms/DEMO` or `problems/demo`, but do not assume they always exist.
 5. Use `pyfmto list algorithms` and `pyfmto list problems` to confirm discovery names.
-6. Use `pyfmto show <name>` before writing final configs.
+6. Use `pyfmto show algorithms.<ALG>` or `pyfmto show problems.<PROBLEM>` with the selected `-c` config before writing final configs. Check the installed version and working directory using [framework-operations.md](framework-operations.md).
 
 ## Algorithm Template Signals
 
@@ -38,7 +38,7 @@ A PyFMTO algorithm package usually contains:
 
 - an `__init__.py` exporting an `AlgorithmData` subclass;
 - a `Client` subclass;
-- a `Server` subclass when communication or aggregation is needed;
+- a concrete `Server` subclass (required by the audited 0.3.4 availability check even without knowledge transfer);
 - optional utility modules for package/action/data classes;
 - docstrings exposing configurable parameters.
 
@@ -48,7 +48,7 @@ Prefer local templates when available. If no template exists, inspect the closes
 
 A PyFMTO problem package usually contains:
 
-- an `__init__.py` exporting the public problem class;
+- an `__init__.py` exporting a `ProblemData` wrapper whose `problem` attribute binds the MultiTaskProblem class in the audited 0.3.4 interface;
 - `SingleTaskProblem` subclasses for task-level objectives when needed;
 - a `MultiTaskProblem` subclass for the task family;
 - default parameters in docstrings;

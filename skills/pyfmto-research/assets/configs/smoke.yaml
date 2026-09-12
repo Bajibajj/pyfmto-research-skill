@@ -1,0 +1,26 @@
+# Copy into the experiment project and choose a fresh results root.
+# Pipeline check only: install BO/ADDFBO requirements; not research defaults.
+launcher:
+  algorithms: [BO, ADDFBO]
+  problems: [Tetci2019]
+  results: out/smoke_pyfmto
+  repeat: 2
+  save: true
+  snapshot: false
+  verbose: true
+  loglevel: DEBUG
+reporter:
+  formats: [console, excel, curve]
+  comparisons:
+    - [BO, ADDFBO]
+  params:
+    curve: {on_log_scale: false, merge: true, suffix: .png}
+    excel: {pvalue: 0.05}
+problems:
+  Tetci2019:
+    dim: 3
+    fe_init: 11
+    fe_max: 14
+    npd: 1
+    seed: 123
+    random_ctrl: weak

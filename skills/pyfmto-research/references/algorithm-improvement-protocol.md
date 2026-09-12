@@ -43,13 +43,13 @@ Check these angles:
 - trust matrix: whether high-trust pairs are actually related and stable across stages;
 - transfer event: whether knowledge was sent, accepted, rejected, ignored, or used as intended;
 - negative transfer: whether unrelated tasks receive harmful knowledge and which candidate sources caused the worsening;
-- budget ledger: whether every client stays within `fe_max = 11 × dim` and whether duplicate evaluations waste budget;
+- budget ledger: whether every client stays within `fe_max = 300` and whether duplicate evaluations waste budget;
 - client usage: whether clients actually exploit received knowledge or ignore it;
 - heterogeneity: whether gains come from easy clients while hard clients stagnate;
 - surrogate health: fit failure, overconfidence, poor calibration, kernel instability, or expensive retraining;
 - evolutionary behavior: diversity loss, premature convergence, mutation scale, elite pressure, and search-direction reuse;
 - federated behavior: aggregation bias, stale knowledge, client imbalance, communication frequency, and privacy boundary;
-- Bayesian behavior: acquisition balance, uncertainty quality, batch scoring, and exploration under `fe_max = 11 × dim`.
+- Bayesian behavior: acquisition balance, uncertainty quality, batch scoring, and exploration under `fe_max = 300`.
 
 Summarize the failure mode in one or two sentences before proposing a change.
 
@@ -61,7 +61,7 @@ Do not import a modern method by name only. For each candidate idea, judge:
 
 - Does it respect the `(x,y)` privacy boundary?
 - Can it work with very few true evaluations?
-- Does it fit `fe_max = 11 × dim`, including initialization?
+- Does it fit `fe_max = 300`, including initialization?
 - Does it handle heterogeneous or unrelated clients?
 - Does it reduce or detect negative transfer?
 - Can PyFMTO implement it cleanly without breaking discovery/config/reporting?

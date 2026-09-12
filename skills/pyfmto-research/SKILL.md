@@ -23,13 +23,13 @@ Use this skill as a full-cycle assistant for federated many-task optimization re
 ## Decision Flow
 
 1. Classify the request: research idea, algorithm implementation, algorithm improvement, problem implementation, experiment config/run, result analysis, or PyFMTO debug.
-2. Load only the reference files needed for that class of task.
+2. Load only the reference files needed for that class of task. For config/run/resume/report/debug, first read `references/framework-operations.md`; it supplies the version check, working-directory rules, and completion evidence.
 3. For algorithm improvement, read `references/algorithm-improvement-protocol.md` before proposing code changes.
 4. Inspect the local PyFMTO project before editing or running anything.
 5. State the intended change or experiment plan and wait for approval before coding when requirements are not fully specified.
 6. Implement with relative imports, explicit public exports, and PyFMTO-compatible config names.
 7. Validate availability with PyFMTO list/show commands when possible.
-8. For experiments, generate detailed logs and reports so failures and convergence behavior can be analyzed.
+8. For authorized experiments, record the resolved config, runtime version, results, and completion evidence described in `references/framework-operations.md`. Config-only and report-only requests do not authorize new optimization runs.
 
 ## Reference Navigation
 
@@ -38,7 +38,8 @@ Read these files only when needed:
 - `references/research-frame.md`: Use for idea analysis, method design, innovation comparison, task similarity, transfer timing/content/usage, privacy, and heterogeneity.
 - `references/pyfmto-workflow.md`: Use for implementing or modifying algorithms/problems and debugging PyFMTO discovery/import/config issues.
 - `references/repo-map.md`: Use when working inside this repository or when locating templates, algorithms, problems, configs, and outputs.
-- `references/experiment-config.md`: Use when creating or editing experiment YAML files, baseline comparisons, budgets, report formats, and detailed run settings.
+- `references/framework-operations.md`: Use before setup, run, resume, report, or operational debugging; verify the installed framework and project before applying version-specific instructions.
+- `references/experiment-config.md`: Use when creating or editing experiment YAML files, baseline comparisons, budgets, report formats, and detailed run settings. It links copyable config assets.
 - `references/result-analysis.md`: Use when interpreting Excel/console/curve reports, `+/-/≈` counts, convergence plots, and paper-style claims.
 - `references/domain-map.md`: Use when connecting FMTO with evolutionary computation, federated learning, multi-task learning, federated optimization, Bayesian optimization, and surrogate-assisted optimization.
 - `references/method-design-rubric.md`: Use when judging a new algorithm idea or improvement by innovation, privacy, objective quality, runtime cost, GPU potential, and ablation value.
@@ -69,10 +70,10 @@ Frame FMTO methods around these questions:
 Use these defaults unless the user overrides them:
 
 - Main baselines: `FDEMD`, `FMTBO`, `IAFFBO`.
-- Put `IAFFBO` last in reporter comparisons when it is the reference algorithm.
+- When evaluating the user's new method, put that method last in each `reporter.comparisons` group so it is the final algorithm column and comparison target. Put `IAFFBO` last only when the user explicitly selects it as the target; preserve an explicitly requested order.
 - Main problems: `Arxiv2017`, `Gecco2020`, and the CEC problem package available through PyFMTO discovery.
 - Use `npd: 1` for the default IID setting; these benchmarks already contain task heterogeneity.
-- Use total true evaluation budget `fe_max: 11 × dim`; this total includes initialization evaluations.
+- Use total true evaluation budget `fe_max: 300`; this total includes initialization evaluations.
 - Use detailed experiment settings: `verbose: true`, `snapshot: true`, `loglevel: DEBUG`.
 - For algorithm improvement, keep detailed diagnostics until the failure mode and the gain mechanism are clear.
 - Track candidate-source provenance for each true evaluation in diagnostic runs.
@@ -88,9 +89,10 @@ For code changes:
 
 - Use the project's current templates before creating new architecture.
 - Use relative imports inside algorithm/problem packages.
-- Export public algorithm/problem classes through the package `__init__.py`.
-- Keep algorithm names and problem names aligned with PyFMTO discovery names.
-- Run or recommend `pyfmto list algorithms`, `pyfmto list problems`, and `pyfmto show <name>` when checking availability.
+- For the audited 0.3.4 interface, register `AlgorithmData` and `ProblemData` subclasses in package `__init__.py`; verify the installed interface before adapting a different version.
+- Keep algorithm names and problem names aligned with PyFMTO discovery names, including case.
+- Check availability with `pyfmto list algorithms`, `pyfmto list problems`, and `pyfmto show algorithms.<ALG>` / `pyfmto show problems.<PROBLEM>`, passing the same `-c` config.
+- Record each true evaluation exactly once; isolate changed code/parameters from old results, and verify report coverage before interpreting the final algorithm column.
 - Do not edit generated results or snapshots unless the user explicitly asks.
 
 For unclear research choices:

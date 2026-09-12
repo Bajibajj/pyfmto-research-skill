@@ -23,7 +23,7 @@ For every method proposal, answer these before coding:
 
 Prefer methods that:
 
-- Improve final objective values under `fe_max = 11 × dim`.
+- Improve final objective values under `fe_max = 300`.
 - Improve stability, convergence behavior, or weak-client outcomes when aggregate gains are close.
 - Record wall-clock time and justify extra cost when performance gains are meaningful.
 - Use privacy-preserving summaries instead of true `(x,y)` pairs.
@@ -53,7 +53,7 @@ When performance improvement needs new ideas, review recent and effective method
 Before adopting an idea, check:
 
 - It does not leak true `(x,y)` pairs.
-- It can work under very few evaluations and `fe_max = 11 × dim`.
+- It can work under very few evaluations and `fe_max = 300`.
 - It handles task heterogeneity and has a negative-transfer defense.
 - It creates a clear ablation and a clear log signal.
 - It can fit PyFMTO discovery, config, run, report, and snapshot workflows.
